@@ -20,13 +20,13 @@ function Contact() {
     setStatus("Sending...");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/contact", formData);
-      setStatus("Message sent successfully ✅");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-    } catch (err) {
-      console.error(err);
-      setStatus("Something went wrong ❌");
-    }
+  await axios.post("http://localhost:5000/api/contact", formData);
+  setStatus("Message sent successfully ✅");
+  setFormData({ name: "", email: "", subject: "", message: "" });
+} catch (err) {
+  console.error(err);
+  setStatus("Something went wrong ❌");
+}
   };
 
   // ✅ keep your same styles here
