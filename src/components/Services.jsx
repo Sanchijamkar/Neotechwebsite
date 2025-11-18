@@ -1,55 +1,72 @@
 import React from "react";
+import { motion } from "framer-motion";
+import { Code, Smartphone, Brain, Cloud, Shield, LineChart } from "lucide-react";
 
 const services = [
   {
+    icon: <Code size={40} className="text-cyan-400" />,
     title: "Web Development",
-    desc: "Custom-built web applications using React, Node.js, and modern frameworks.",
+    desc: "We craft responsive and high-performance websites using the latest technologies.",
   },
   {
-    title: "Cloud Integration",
-    desc: "We deploy scalable systems using AWS, Azure, and Google Cloud.",
+    icon: <Smartphone size={40} className="text-blue-400" />,
+    title: "Mobile App Development",
+    desc: "Delivering seamless mobile experiences across iOS and Android platforms.",
   },
   {
-    title: "UI/UX Design",
-    desc: "Design systems, prototypes, and interfaces that engage users.",
+    icon: <Brain size={40} className="text-purple-400" />,
+    title: "AI & Machine Learning",
+    desc: "Empower your business with intelligent automation and predictive analytics.",
   },
   {
-    title: "Mobile Solutions",
-    desc: "React Native-based apps for Android and iOS with seamless performance.",
+    icon: <Cloud size={40} className="text-indigo-400" />,
+    title: "Cloud Solutions",
+    desc: "Scalable, secure, and optimized cloud infrastructure for modern enterprises.",
   },
   {
-    title: "API Development",
-    desc: "RESTful and GraphQL APIs designed for security and speed.",
+    icon: <Shield size={40} className="text-teal-400" />,
+    title: "Cybersecurity",
+    desc: "Protecting your digital assets with cutting-edge security strategies and tools.",
   },
   {
-    title: "AI & Automation",
-    desc: "Integrating intelligent automation for smarter business operations.",
+    icon: <LineChart size={40} className="text-cyan-500" />,
+    title: "Data Analytics",
+    desc: "Transforming data into actionable insights that drive smarter decisions.",
   },
 ];
 
 export default function Services() {
   return (
-    <section id="services" className="py-20 bg-white">
-      <div className="container mx-auto px-6 text-center">
-        <h2 className="text-3xl font-extrabold mb-4">
-          Innovative Software Solutions
-        </h2>
-        <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
-          We deliver custom digital solutions that fit your business needs.
-        </p>
+    <section
+      id="services"
+      className="relative py-24 bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white overflow-hidden"
+    >
+      {/* ==== BACKGROUND OVERLAY ==== */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(14,165,233,0.15),_transparent_60%)]" />
 
-        <div className="grid md:grid-cols-3 gap-8">
+      <div className="relative max-w-7xl mx-auto px-6 text-center z-10">
+        <motion.h2
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-4xl md:text-5xl font-bold mb-14"
+        >
+          Our <span className="bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text">Services</span>
+        </motion.h2>
+
+        {/* ==== SERVICE CARDS ==== */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {services.map((s, i) => (
-            <div
+            <motion.div
               key={i}
-              className="p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all bg-gradient-to-br from-white to-gray-50"
+              whileHover={{ scale: 1.05, y: -5 }}
+              transition={{ type: "spring", stiffness: 200 }}
+              className="p-8 rounded-2xl bg-white/10 backdrop-blur-md border border-cyan-400/20 shadow-lg hover:shadow-cyan-400/40 transition-all text-left"
             >
-              <div className="text-orange-500 text-3xl mb-3 font-bold">
-                {s.title.charAt(0)}
-              </div>
-              <h3 className="text-lg font-semibold mb-2">{s.title}</h3>
-              <p className="text-gray-600">{s.desc}</p>
-            </div>
+              <div className="mb-4">{s.icon}</div>
+              <h3 className="text-2xl font-semibold mb-2 text-cyan-300">{s.title}</h3>
+              <p className="text-gray-300">{s.desc}</p>
+            </motion.div>
           ))}
         </div>
       </div>

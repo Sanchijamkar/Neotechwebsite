@@ -1,62 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <header className="fixed top-0 w-full z-50 bg-gray-900/70 backdrop-blur-md shadow-lg border-b border-gray-800">
-      <div className="container mx-auto px-6 py-4 flex items-center justify-between text-white">
-        {/* ===== LOGO ===== */}
-        <div className="flex items-center gap-3 cursor-pointer group">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-400 via-indigo-500 to-purple-600 
-          flex items-center justify-center text-white font-extrabold text-lg shadow-md 
-          transform transition-transform duration-500 group-hover:rotate-180 group-hover:scale-110">
+    <motion.header
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+        isScrolled
+          ? "bg-black/80 backdrop-blur-md shadow-lg"
+          : "bg-transparent backdrop-blur-sm"
+      }`}
+    >
+      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+        {/* ==== LOGO ==== */}
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          className="flex items-center gap-3 cursor-pointer"
+        >
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 
+          flex items-center justify-center text-white font-extrabold text-lg shadow-md">
             N
           </div>
           <div>
-            <div className="text-xl font-extrabold tracking-wide">Neotech</div>
-            <div className="text-xs text-gray-400">Software & Cloud</div>
+            <h1 className="text-xl font-extrabold tracking-wide text-white">
+              Neotech
+            </h1>
+            <p className="text-xs text-gray-300">Software & Cloud</p>
           </div>
-        </div>
+        </motion.div>
 
-        {/* ===== NAVIGATION (Desktop) ===== */}
-        <nav className="hidden md:flex items-center gap-10 text-sm font-medium">
-          <a
-            href="#home"
-            className="relative group"
-          >
-            Home
-            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-cyan-400 group-hover:w-full transition-all duration-300"></span>
-          </a>
-          <a
-            href="#services"
-            className="relative group"
-          >
-            Services
-            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-cyan-400 group-hover:w-full transition-all duration-300"></span>
-          </a>
-          <a
-            href="#about"
-            className="relative group"
-          >
-            About
-            <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-cyan-400 group-hover:w-full transition-all duration-300"></span>
-          </a>
-          
+        {/* ==== NAV LINKS (Desktop) ==== */}
+        <nav className="hidden md:flex items-center gap-10 text-sm font-medium text-gray-200">
+          {["Home", "Services", "About", "Projects", "Contact"].map(
+            (item, idx) => (
+              <motion.a
+                key={idx}
+                href={`#${item.toLowerCase()}`}
+                whileHover={{ scale: 1.1 }}
+                className="relative group hover:text-cyan-400 transition-all duration-300"
+              >
+                {item}
+                <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-cyan-400 group-hover:w-full transition-all duration-300"></span>
+              </motion.a>
+            )
+          )}
         </nav>
 
-        {/* ===== CONTACT BUTTON ===== */}
-        <a
-          href="#contact"
-          className="hidden md:inline-block px-5 py-2.5 rounded-full bg-gradient-to-r from-cyan-500 to-indigo-600 
-          text-white text-sm font-semibold shadow-md hover:shadow-cyan-500/30 hover:scale-105 transition-all duration-300"
-        >
-          Contact Us
-        </a>
-
-        {/* ===== MOBILE MENU TOGGLE ===== */}
+        {/* ==== MOBILE MENU BUTTON ==== */}
         <button
-          className="md:hidden flex flex-col gap-1.5 focus:outline-none"
+          className="md:hidden flex flex-col gap-1.5 text-white focus:outline-none"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           <span
@@ -77,35 +82,27 @@ export default function Header() {
         </button>
       </div>
 
-      {/* ===== MOBILE MENU ===== */}
+      {/* ==== MOBILE MENU ==== */}
       {menuOpen && (
-        <div className="md:hidden bg-gray-900/95 backdrop-blur-md text-center text-white border-t border-gray-700">
-          <a
-            href="#home"
-            className="block py-3 border-b border-gray-800 hover:bg-gray-800 transition"
-          >
-            Home
-          </a>
-          <a
-            href="#services"
-            className="block py-3 border-b border-gray-800 hover:bg-gray-800 transition"
-          >
-            Services
-          </a>
-          <a
-            href="#about"
-            className="block py-3 border-b border-gray-800 hover:bg-gray-800 transition"
-          >
-            About
-          </a>
-          <a
-            href="#contact"
-            className="block py-3 text-cyan-400 font-semibold hover:bg-gray-800 transition"
-          >
-            Contact Us
-          </a>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="md:hidden bg-black/90 backdrop-blur-md text-center text-white border-t border-gray-700"
+        >
+          {["Home", "Services", "About", "Projects", "Contact"].map(
+            (item, idx) => (
+              <a
+                key={idx}
+                href={`#${item.toLowerCase()}`}
+                className="block py-3 border-b border-gray-800 hover:bg-gray-800 transition"
+                onClick={() => setMenuOpen(false)}
+              >
+                {item}
+              </a>
+            )
+          )}
+        </motion.div>
       )}
-    </header>
+    </motion.header>
   );
 }
